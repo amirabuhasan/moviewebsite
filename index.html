@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Fresh Tomatoes!</title>
+
+    <!-- Bootstrap 3 -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <style type="text/css" media="screen">
+
+    @import url(http://allfont.net/allfont.css?fonts=montserrat-light);
+
+        body {
+            padding-top: 80px;
+            font-family: "Montserrat Light";
+            background-color: #e8e8e8;
+            color: black;
+        }
+
+        .navbar {
+            background: red;
+        }
+
+        .navbar>.container .navbar-brand{
+            text-align: center;
+        }
+
+        .navbar-header {
+            float: left;
+            padding: 15px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .navbar-brand {
+        float:none;
+        }
+
+        .navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav>li>a {
+            font-family: "Montserrat";
+            font-size: 28px;
+            color: black;
+            -webkit-text-fill-color: white;
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: black;
+            font-weight: bold;
+        }
+
+        .top {
+            margin-right: 10px;
+        }
+
+        #trailer .modal-dialog {
+            margin-top: 200px;
+            width: 640px;
+            height: auto;
+        }
+
+        .movie-info{
+            position: fixed;
+            background-color: black;
+            width: 640px;
+            height: 200px;
+        }
+
+        .movie-review{
+            margin-top: 200px;
+        }
+
+        .additional-info{
+            margin-top: 20px;
+        }
+
+        .hanging-close {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            z-index: 9001;
+        }
+        #trailer-video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        h3{
+            color: white;
+            text-decoration: underline;
+        }
+
+        h2{
+            font-size: 20px;
+        }
+
+        #writeup{
+            margin-top: 20px;
+            text-align: center;
+            color: white;
+            margin-left: 100px;
+            margin-right: 100px;
+            font-size: 14px;
+        }
+
+        #director{
+            margin-left: 20px;
+            position: bottom;
+            color: white;
+            float: left;
+            font-size 8px;
+            font-style: italic;
+        }
+
+        #runtime{
+            position: bottom;
+            color: white;
+            margin-left: 480px;
+            font-size 10px;
+            font-style: italic;
+        }
+
+        #movie-title{
+            color: white;
+            text-align: center;
+        }
+
+        .movie-tile {
+            width: 30%;
+            margin: 10px;
+            height: 420px;
+            padding: 10px;
+            background-color: white;
+        }
+
+        .movie-tile:hover {
+            background-color: #f5d0d0;
+            cursor: pointer;
+        }
+
+        .scale-media {
+            padding-bottom: 56.25%;
+            position: relative;
+        }
+
+        .scale-media iframe {
+            border: none;
+            height: 100%;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 0;
+            background-color: white;
+        }
+
+    </style>
+
+
+
+    <script type="text/javascript" charset="utf-8">
+        // Pause the video when the modal is closed
+        $(document).on('click', '.hanging-close, .modal-backdrop, .modal', function (event) {
+            // Remove the src so the player itself gets removed, as this is the only
+            // reliable way to ensure the video stops playing in IE
+            $("#trailer-video-container").empty();
+            $(".movie-title h3").empty();
+            $(".writeup p").empty();
+        });
+        // Start playing the video whenever the trailer modal is opened
+        $(document).on('click', '.movie-tile', function (event) {
+            var trailerYouTubeId = $(this).attr('data-trailer-youtube-id')
+            var sourceUrl = 'http://www.youtube.com/embed/' + trailerYouTubeId + '?autoplay=1&html5=1';
+
+            // Displays the movie title whenever the trailer modal is opened
+            var movieTitle = $(this).attr("data-movie-title");
+            $("#movie-title h3").empty().append(movieTitle);
+
+            // Displays the movie storyline whenever the trailer modal is opened
+            var movieStoryline = $(this).attr("data-movie-storyline");
+            $("#writeup p").empty().append(movieStoryline);
+
+            // Displays the movie director whenever the trailer modal is opened
+            var movieDirector = $(this).attr("data-movie-director");
+            $("#director span").empty().append(movieDirector);
+
+            // Displays movie runtime whenever the trailer modal is opened
+            var movieRuntime = $(this).attr("data-movie-runtime");
+            $("#runtime span").empty().append(movieRuntime);
+
+            // Displays the review section plugin from Powr in an iframe whenever the trailer modal is opened
+            var movieReview = $(this).attr("data-movie-review");
+            $(".movie-review").empty().append($("<iframe></iframe>", {
+              'src': movieReview,
+              'width':'100%',
+              'height':'600px',
+              'frameborder': 0,
+              'overflow-y': 'scroll'
+            }));
+
+            $("#trailer-video-container").empty().append($("<iframe></iframe>", {
+              'id': 'trailer-video',
+              'type': 'text-html',
+              'src': sourceUrl,
+              'frameborder': 0
+            }));
+        });
+        // Animate in the movies when the page loads
+        $(document).ready(function () {
+          $('.movie-tile').hide().first().show("fast", function showNext() {
+            $(this).next("div").show("fast", showNext);
+          });
+        });
+    </script>
+</head>
+
+  <body>
+    <!-- Trailer Video Modal -->
+    <div class="modal" id="trailer">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <a href="#" class="hanging-close" data-dismiss="modal" aria-hidden="true">
+            <img src="https://lh5.ggpht.com/v4-628SilF0HtHuHdu5EzxD7WRqOrrTIDi_MhEG6_qkNtUK5Wg7KPkofp_VJoF7RS2LhxwEFCO1ICHZlc-o_=s0#w=24&h=24"/>
+          </a>
+          <div class="scale-media" id="trailer-video-container">
+          </div>
+          <div class="movie-info">
+              <div id="movie-title">
+                  <h3></h3>
+              </div>
+              <div id="writeup">
+                  <p></p>
+              </div>
+              <div class="additional-info">
+                  <div id="director">
+                      Directed by: <span></span>
+                  </div>
+                  <div id="runtime">
+                      Runtime: <span></span>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <div class="movie-review">
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Page Content -->
+    <div class="container">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <img class = "top" src="images/glasses.png" alt="where did it go?">
+            <a class="navbar-brand" href="#">Amir's Favorite Movies</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="Ys-mbHXyWX4" data-toggle="modal" data-target="#trailer" data-movie-storyline="Depicts the childhood and adolescence of Mason Evans Jr. from ages six to eighteen as he grows up in Texas with divorced parents" data-movie-title="Boyhood" data-movie-review="https://www.powr.io/plugins/comments/view?unique_label=853d733c_1501603925&external_type=iframe" data-movie-director="Richard Linklater" data-movie-runtime="165 minutes">
+    <img src="https://upload.wikimedia.org/wikipedia/en/b/bb/Boyhood_film.jpg" width="220" height="342">
+    <h2>Boyhood</h2>
+</div>
+
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="d96cjJhvlMA" data-toggle="modal" data-target="#trailer" data-movie-storyline="In Guardians of the Galaxy, Peter Quill forms an uneasy alliance with a group of extraterrestrial misfits who are fleeing after stealing a powerful artifact." data-movie-title="Guardians of the Galaxy" data-movie-review="https://www.powr.io/plugins/comments/view?unique_label=826b3dc1_1501604005&external_type=iframe" data-movie-director="James Gunn" data-movie-runtime="122 minutes">
+    <img src="https://upload.wikimedia.org/wikipedia/en/8/8f/GOTG-poster.jpg" width="220" height="342">
+    <h2>Guardians of the Galaxy</h2>
+</div>
+
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="uJfLoE6hanc" data-toggle="modal" data-target="#trailer" data-movie-storyline="A story about a faded Hollywood actor best known for playing the superhero, Birdman." data-movie-title="Birdman" data-movie-review="https://www.powr.io/plugins/comments/view?unique_label=148c0c3d_1501603637&external_type=iframe" data-movie-director="Alejandro G. Inarritu" data-movie-runtime="119 minutes">
+    <img src="https://upload.wikimedia.org/wikipedia/en/6/63/Birdman_poster.png" width="220" height="342">
+    <h2>Birdman</h2>
+</div>
+
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="oI3UuneLcyU" data-toggle="modal" data-target="#trailer" data-movie-storyline="The film picks up the story in Before Sunrise of the young American man and French woman who spent a passionate night together in Vienna." data-movie-title="Before Sunset" data-movie-review="https://www.powr.io/plugins/comments/view?unique_label=d4814f00_1501604138&external_type=iframe" data-movie-director="Richard Linklater" data-movie-runtime="80 minutes">
+    <img src="https://upload.wikimedia.org/wikipedia/en/d/d1/Before_Sunset_poster.jpg" width="220" height="342">
+    <h2>Before Sunset</h2>
+</div>
+
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="aO1bYukdvLI" data-toggle="modal" data-target="#trailer" data-movie-storyline="A year after their father's funeral, three brothers travel across India by train in an attempt to bond with each other." data-movie-title="The Darjeeling Limited" data-movie-review="https://www.powr.io/plugins/comments/view?unique_label=593315b7_1501604391&external_type=iframe" data-movie-director="Wes Anderson" data-movie-runtime="91 minutes">
+    <img src="https://upload.wikimedia.org/wikipedia/en/1/1e/Darjeeling_Limited_Poster.jpg" width="220" height="342">
+    <h2>The Darjeeling Limited</h2>
+</div>
+
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="rXUFUp6vsxg" data-toggle="modal" data-target="#trailer" data-movie-storyline="A young man is rocked by two announcements from his elderly father: that he has terminal cancer, and that he has a young male lover." data-movie-title="Beginners" data-movie-review="https://www.powr.io/plugins/comments/view?unique_label=3b77b0f2_1501604479&external_type=iframe" data-movie-director="Mike Mills" data-movie-runtime="104 minutes">
+    <img src="https://upload.wikimedia.org/wikipedia/en/f/f6/Beginners_Poster.jpg" width="220" height="342">
+    <h2>Beginners</h2>
+</div>
+
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="BSXBvor47Zs" data-toggle="modal" data-target="#trailer" data-movie-storyline="Five high school students meet in Saturday detention and discover how they have a lot more in common than they thought." data-movie-title="The Breakfast Club" data-movie-review="https://www.powr.io/plugins/comments/view?unique_label=15d41675_1501604534&external_type=iframe" data-movie-director="John Hughes" data-movie-runtime="97 minutes">
+    <img src="https://upload.wikimedia.org/wikipedia/en/5/50/The_Breakfast_Club.jpg" width="220" height="342">
+    <h2>The Breakfast Club</h2>
+</div>
+
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="loTIzXAS7v4" data-toggle="modal" data-target="#trailer" data-movie-storyline="An insurance salesman/adjuster discovers his entire life is actually a television show." data-movie-title="The Truman Show" data-movie-review="https://www.powr.io/plugins/comments/view?unique_label=8fb288d8_1501604580&external_type=iframe" data-movie-director="Peter Weir" data-movie-runtime="103 minutes">
+    <img src="https://upload.wikimedia.org/wikipedia/en/c/cd/Trumanshow.jpg" width="220" height="342">
+    <h2>The Truman Show</h2>
+</div>
+
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="LFphYRyH7wc" data-toggle="modal" data-target="#trailer" data-movie-storyline="A week in the life of a young singer as he navigates the Greenwich Village folk scene of 1961." data-movie-title="Inside Llewyn Davis" data-movie-review="https://www.powr.io/plugins/comments/view?unique_label=56b0bf07_1501604622&external_type=iframe" data-movie-director="Joel Coen & Ethan Coen" data-movie-runtime="105 minutes">
+    <img src="https://upload.wikimedia.org/wikipedia/en/d/df/Inside_Llewyn_Davis_Poster.jpg" width="220" height="342">
+    <h2>Inside Llewyn Davis</h2>
+</div>
+
+
+    </div>
+  </body>
+</html>

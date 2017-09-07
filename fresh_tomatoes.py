@@ -22,7 +22,7 @@ main_page_head = '''
 
         body {
             padding-top: 80px;
-            font-family: "Montserrat Light";
+            font-family: "Montserrat Light", arial;
             background-color: #e8e8e8;
             color: black;
         }

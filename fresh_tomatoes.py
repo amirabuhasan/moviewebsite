@@ -15,11 +15,12 @@ main_page_head = '''
     <!-- Bootstrap 3 -->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
     <style type="text/css" media="screen">
 
-    @import url(http://allfont.net/allfont.css?fonts=montserrat-light);
+    @import url(https://allfont.net/allfont.css?fonts=montserrat-light);
+    @import url(https://allfont.net/allfont.css?fonts=montserrat);
 
         body {
             padding-top: 80px;
